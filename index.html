@@ -12,5 +12,29 @@
 </head>
 <body>
 Hello World!
+    <a>
+    <button type="button" id="track_event" onclick="myTrackFunction()">Click Me to track!</button>
+    <button type="button" id="identify_event" onclick="myIdentifyFunction()">Click Me to identify!</button>
+    <button type="button" id="group_event" onclick="myGroupFunction()">Click Me to group!</button>
+    </a>
+    <script>
+        function myTrackFunction(){
+            analytics.track('Button Clicked',{
+                title:`track_event`
+            });
+        }
+        function myIdentifyFunction(){
+            analytics.identify({
+                name:'Simran',
+                age:'31'
+            });
+        }
+        function myGroupFunction(){
+            analytics.group('Awesome Batsman Group',{
+                category:'Cricket Leinster'
+            });
+        }
+
+    </script>
 </body>
 </html>
