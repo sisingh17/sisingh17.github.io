@@ -14,22 +14,27 @@
 Hello World!
     <a>
         <button type="button" id="track_event" onclick="myTrackFunction()">Click Me to track!</button>
-        <button type="button" id="identify_event" onclick="myIdentifyFunction()">Click Me to identify!</button>
+        <button type="button" id="identify_profile_1" onclick="myIdentifyFirstProfileFunction()">Click Me to identify useExisting_1!</button>
+        <button type="button" id="identify_profile_2" onclick="myIdentifySecondProfileFunction()">Click Me to identify useExisting_2!</button>
         <button type="button" id="group_event" onclick="myGroupFunction()">Click Me to group!</button>
         <button type="button" id="alias_event" onclick="myAliasFunction()">Click Me to create an alias!</button>
     </a>
     <script>
         function myTrackFunction(){
-            analytics.track('Button Clicked',{
-                title:`track_event`
+            analytics.track('Something Happened',{
+                comments:`blabla`
             });
         }
-        function myIdentifyFunction(){
-            analytics.identify("97980cfea0067", {
-                name: "Peter Gibbons",
-                email: "peter@example.com",
-                plan: "premium",
-                logins: 5
+        function myIdentifyFirstProfileFunction(){
+            analytics.identify("useExisting_1", {
+                name: "useExisting_1",
+                email: "useExisting_1@gma.com",
+            });
+        }
+        function myIdentifySecondProfileFunction(){
+            analytics.identify("useExisting_2", {
+                name: "useExisting_2",
+                email: "useExisting_1@gma.com",
             });
         }
         function myGroupFunction(){
