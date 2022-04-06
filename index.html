@@ -17,7 +17,7 @@ Hello World!
         <button type="button" id="identify_profile_1" onclick="myIdentifyFirstProfileFunction()">Click Me to identify useExisting_3!</button>
         <button type="button" id="identify_profile_2" onclick="myIdentifySecondProfileFunction()">Click Me to identify useExisting_2!</button>
         <button type="button" id="track_opt_stat_change" onclick="myTrackOptStat()">Click Me to change opt status!</button>
-        <button type="button" id="group_event" onclick="myGroupFunction()">Click Me to group!</button>
+        <button type="button" id="alias_profile_2" onclick="myIdentifyThirdProfileFunction()">Click Me to alias!</button>
         <button type="button" id="alias_event" onclick="myAliasFunction()">Click Me to create an alias!</button>
     </a>
     <script>
@@ -33,20 +33,21 @@ Hello World!
             });
         }
         function myIdentifyFirstProfileFunction(){
-            analytics.identify("useExisting_3", {
-                name: "useExisting_3",
-                email: "useExisting_1@gma.com",
+            analytics.identify("useExisting_4", {
+                name: "useExisting_4",
+                email: "useExisting_4@gma.com",
             });
         }
         function myIdentifySecondProfileFunction(){
-            analytics.identify("useExisting_2", {
-                name: "useExisting_2",
-                email: "useExisting_1@gma.com",
+            analytics.identify("useExisting_5", {
+                name: "useExisting_5",
+                email: "useExisting_5@gma.com",
             });
         }
-        function myGroupFunction(){
-            analytics.group('Awesome Batsman Group',{
-                category:'Cricket Leinster'
+        function myIdentifyThirdProfileFunction(){
+            analytics.identify("useExisting_5", {
+                name: "useExisting_5",
+                email: "useExisting_4@gma.com",
             });
         }
         function myAliasFunction(){
