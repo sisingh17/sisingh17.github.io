@@ -33,6 +33,17 @@ Hello World!
   <input id="submit" type="submit" value="Submit" onClick="formSubmission()">
 </form>
      <script>
+         function onFormSuccess(event) {
+            var form = document.querySelector('#userDetailsForm');
+            var fname = form.querySelector('#fname');
+            var lname = form.querySelector('#lname');
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'fname': fname,
+                'lname': lname
+            });
+  // Rest of the success callback code
+}
         function formSubmission(){
             var form = document.querySelector('#userDetailsForm');
             var fname = form.querySelector('#fname');
