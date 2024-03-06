@@ -25,12 +25,63 @@ Hello World!
         <button type="button" id="alias_profile_2" onclick="myIdentifyThirdProfileFunction()">Click Me to alias!</button>
         <button type="button" id="alias_event" onclick="myAliasFunction()">Click Me to create an alias!</button>
     </a>
-    <form action="/">
+    <form id= "userDetailsForm" action="/">
   <label for="fname">First name:</label><br>
-  <input type="text" id="fname" name="fname"><br>
+  <input type="text" id="fname" name="fname" value=""><br>
   <label for="lname">Last name:</label><br>
-  <input type="text" id="lname" name="lname">
-  <input id="submit" type="submit" value="Submit">
+  <input type="text" id="lname" name="lname" value="">
+  <input id="submit" type="submit" value="Submit" onClick="formSubmission()">
 </form>
+     <script>
+        function formSubmission(){
+            var form = document.querySelector('#userDetailsForm');
+            var fname = form.querySelector('#fname');
+            var lname = form.querySelector('#lname');
+             window.dataLayer = window.dataLayer || [];
+             window.dataLayer.push({
+                'fname': fname,
+                'lname': lname
+            });
+        }
+        function myTrackFunction(){
+            analytics.track('Something Happened',{
+                comments:`blabla`,
+                email: 'singh.sj90@gmail.com',
+                sport: 'Cricket',
+                function: 'T20 World Cup',
+                team: 'India',
+                opponent:'Pakistan'
+            });
+        }
+        function myTrackOptStat(){
+            analytics.track('Opt Status Changed',{
+                emailSubscriptionOptNumber:`Universal`,
+                emailSubscriptionOptIndicator: true
+            });
+        }
+        function myIdentifyFirstProfileFunction(){
+            analytics.identify("useExisting_4", {
+                name: "useExisting_4",
+                email: "useExisting_4@gma.com",
+            });
+        }
+        function myIdentifySecondProfileFunction(){
+            analytics.identify("useExisting_5", {
+                name: "useExisting_5",
+                email: "useExisting_5@gma.com",
+            });
+        }
+        function myIdentifyThirdProfileFunction(){
+            analytics.identify("useExisting_5", {
+                name: "useExisting_5",
+                email: "useExisting_4@gma.com",
+            });
+        }
+        function myAliasFunction(){
+            var str = "Simran";
+            var enc = window.btoa(str);
+            analytics.alias(enc);
+        }
+    </script>
 </body>
 </html>
