@@ -36,11 +36,13 @@ Hello World!
          function submitForm() {
             var form = document.querySelector('#userDetailsForm');
             var fname = form.querySelector('#fname');
+            console.log(fname.value);
             var lname = form.querySelector('#lname');
+            console.log(fname.value);
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
-                'fname': fname,
-                'lname': lname
+                'fname': fname.value,
+                'lname': lname.value
             });
   // Rest of the success callback code
 }
