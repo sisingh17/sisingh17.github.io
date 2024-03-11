@@ -18,18 +18,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 Hello World!
     <a>
-        <button type="button" id="track_event" onclick="myTrackFunction()">Click Me to track!</button>
-        <button type="button" id="identify_profile_1" onclick="myIdentifyFirstProfileFunction()">Click Me to identify useExisting_3!</button>
-        <button type="button" id="identify_profile_2" onclick="myIdentifySecondProfileFunction()">Click Me to identify useExisting_2!</button>
-        <button type="button" id="track_opt_stat_change" onclick="myTrackOptStat()">Click Me to change opt status!</button>
-        <button type="button" id="alias_profile_2" onclick="myIdentifyThirdProfileFunction()">Click Me to alias!</button>
-        <button type="button" id="alias_event" onclick="myAliasFunction()">Click Me to create an alias!</button>
+        <button type="button" id="track_event" onclick="">Click Me to track!</button>
     </a>
-    <form id= "userDetailsForm" onSubmit="submitForm()">
+<form id= "userDetailsForm" onSubmit="submitForm()">
   <label for="fname">First name:</label><br>
   <input type="text" id="fname" name="fname" value=""><br>
   <label for="lname">Last name:</label><br>
   <input type="text" id="lname" name="lname" value="">
+  <label for="email">Email Address:</label><br>
+  <input type="text" id="email" name="email" value="">
+  <label for="userId">User Id:</label><br>
+  <input type="text" id="userId" name="userId" value="">
+  <input id="submit" type="submit" value="Submit">
+</form>
+<form id= "aliasForm" onSubmit="aliasFunction()">
+  <label for="newId">New User Id:</label><br>
+  <input type="text" id="newId" name="newId" value="">
+  <input id="submit" type="submit" value="Submit">
+</form>
+<form id= "groupForm" onSubmit="groupFunction()">
+  <label for="groupId">Group Id:</label><br>
+  <input type="text" id="groupId" name="groupId" value="">
   <input id="submit" type="submit" value="Submit">
 </form>
      <script>
@@ -38,53 +47,40 @@ Hello World!
             var fname = form.querySelector('#fname');
             console.log(fname.value);
             var lname = form.querySelector('#lname');
-            console.log(fname.value);
+            console.log(lname.value);
+            var email = form.querySelector('#email');
+            console.log(email.value);
+            var userId = form.querySelector('#userId');
+            console.log(userId.value); 
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
                 'fname': fname.value,
-                'lname': lname.value
+                'lname': lname.value,
+                'email': email.value,
+                'userId': userId.value
             });
   // Rest of the success callback code
 }
-        function myTrackFunction(){
-            analytics.track('Something Happened',{
-                comments:`blabla`,
-                email: 'singh.sj90@gmail.com',
-                sport: 'Cricket',
-                function: 'T20 World Cup',
-                team: 'India',
-                opponent:'Pakistan'
+        function aliasFunction() {
+            var form = document.querySelector('#aliasForm');
+            var newId = form.querySelector('#newId');
+            console.log(newId.value); 
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'newId': newId.value
             });
-        }
-        function myTrackOptStat(){
-            analytics.track('Opt Status Changed',{
-                emailSubscriptionOptNumber:`Universal`,
-                emailSubscriptionOptIndicator: true
+  // Rest of the success callback code
+}
+        function groupFunction() {
+            var form = document.querySelector('#groupForm');
+            var groupId = form.querySelector('#groupId');
+            console.log(groupId.value); 
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'groupId': newId.groupId
             });
-        }
-        function myIdentifyFirstProfileFunction(){
-            analytics.identify("useExisting_4", {
-                name: "useExisting_4",
-                email: "useExisting_4@gma.com",
-            });
-        }
-        function myIdentifySecondProfileFunction(){
-            analytics.identify("useExisting_5", {
-                name: "useExisting_5",
-                email: "useExisting_5@gma.com",
-            });
-        }
-        function myIdentifyThirdProfileFunction(){
-            analytics.identify("useExisting_5", {
-                name: "useExisting_5",
-                email: "useExisting_4@gma.com",
-            });
-        }
-        function myAliasFunction(){
-            var str = "Simran";
-            var enc = window.btoa(str);
-            analytics.alias(enc);
-        }
+  // Rest of the success callback code
+}
     </script>
 </body>
 </html>
