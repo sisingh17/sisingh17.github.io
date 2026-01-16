@@ -76,5 +76,49 @@ Hello World!
             analytics.alias(enc);
         }
     </script>
+    <script>
+  (function attachAmplitudeDeviceIdToSegment() {
+    function getAmplitudeDeviceId() {
+      return (
+        window.amplitude &&
+        typeof amplitude.getDeviceId === "function" &&
+        amplitude.getDeviceId()
+      );
+    }
+
+    function wrapSegmentMethod(methodName) {
+      const original = analytics[methodName];
+
+      analytics[methodName] = function () {
+        const args = Array.prototype.slice.call(arguments);
+        const optionsIndex = methodName === "identify" ? 2 : 2;
+
+        args[optionsIndex] = args[optionsIndex] || {};
+        args[optionsIndex].integrations = args[optionsIndex].integrations || {};
+
+        const deviceId = getAmplitudeDeviceId();
+        if (deviceId) {
+          args[optionsIndex].integrations.Amplitude = {
+            ...(args[optionsIndex].integrations.Amplitude || {}),
+            device_id: deviceId
+          };
+        }
+
+        return original.apply(this, args);
+      };
+    }
+
+    function waitForLibraries() {
+      if (window.analytics && window.amplitude && analytics.track && analytics.identify) {
+        wrapSegmentMethod("track");
+        wrapSegmentMethod("identify");
+      } else {
+        setTimeout(waitForLibraries, 100);
+      }
+    }
+
+    waitForLibraries();
+  })();
+</script>
 </body>
 </html>
