@@ -35,25 +35,26 @@ Hello World!
         <button type="button" id="alias_profile_2" onclick="myIdentifyThirdProfileFunction()">Click Me to alias!</button>
         <button type="button" id="alias_event" onclick="myAliasFunction()">Click Me to create an alias!</button>
     </a>
-    <script>
-    (function patchSegmentEarly() {
+   <script>
+(function patchSegmentEarly() {
 
-     function getAmplitudeDeviceId() {
-        try {
-      // Always fetch the latest device ID
+  function getAmplitudeDeviceId() {
+    try {
+      // Use getInstance() for analytics.js next
       return window.amplitude &&
-        typeof amplitude.getDeviceId === "function" &&
-        amplitude.getDeviceId();
-     } catch (e) {
+             amplitude.getInstance &&
+             amplitude.getInstance().getDeviceId();
+    } catch (e) {
+      console.warn("Amplitude device_id not ready yet");
       return null;
-     }
-     }
+    }
+  }
 
-    function ensureOptions(args) {
-     const last = args[args.length - 1];
-     if (last && typeof last === "object" && !Array.isArray(last)) {
+  function ensureOptions(args) {
+    const last = args[args.length - 1];
+    if (last && typeof last === "object" && !Array.isArray(last)) {
       return last;
-     }
+    }
     const options = {};
     args.push(options);
     return options;
@@ -74,9 +75,6 @@ Hello World!
           ...(options.integrations.Amplitude || {}),
           device_id: deviceId
         };
-      } else {
-        // Optional: log for debugging if device ID is missing
-        console.warn("Amplitude device_id not ready yet");
       }
 
       return original.apply(this, args);
@@ -108,7 +106,8 @@ Hello World!
             });
         }
         function myTrackOptStat(){
-            console.log("Amplitude device ID:", amplitude.getDeviceId());
+            const amplitudeDeviceId = amplitude.getInstance().getDeviceId();
+            console.log("Amplitude device ID:", amplitudeDeviceId);
             analytics.track('Opt Status Changed',{
                 emailSubscriptionOptNumber:`Universal`,
                 emailSubscriptionOptIndicator: true
