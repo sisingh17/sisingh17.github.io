@@ -24,30 +24,11 @@ function OptanonWrapper() { }
     </script>
     <!-- Segment Tracking script for sisingh17.github.io -->
     <script src="https://cdn.amplitude.com/script/fc122e3db27a4890820640dffffd1036.js"></script><script>window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));window.amplitude.init('fc122e3db27a4890820640dffffd1036', {"fetchRemoteConfig":true,"autocapture":true});</script>
-</head>
-<body>
-Hello World!
-    <a>
-        <button type="button" id="track_event" onclick="myTrackFunction()">Click Me to track!</button>
-        <button type="button" id="identify_profile_1" onclick="myIdentifyFirstProfileFunction()">Click Me to identify useExisting_3!</button>
-        <button type="button" id="identify_profile_2" onclick="myIdentifySecondProfileFunction()">Click Me to identify useExisting_2!</button>
-        <button type="button" id="track_opt_stat_change" onclick="myTrackOptStat()">Click Me to change opt status!</button>
-        <button type="button" id="alias_profile_2" onclick="myIdentifyThirdProfileFunction()">Click Me to alias!</button>
-        <button type="button" id="alias_event" onclick="myAliasFunction()">Click Me to create an alias!</button>
-    </a>
-   <script>
-(function patchSegmentEarly() {
+    <script>
+(function patchSegmentEarlyCookie() {
 
   function getAmplitudeDeviceId() {
-    try {
-      // Use getInstance() for analytics.js next
-      return window.amplitude &&
-             amplitude.getInstance &&
-             amplitude.getInstance().getDeviceId();
-    } catch (e) {
-      console.warn("Amplitude device_id not ready yet");
-      return null;
-    }
+    return getAmplitudeDeviceIdFromCookie();
   }
 
   function ensureOptions(args) {
@@ -94,6 +75,17 @@ Hello World!
 
 })();
 </script>
+</head>
+<body>
+Hello World!
+    <a>
+        <button type="button" id="track_event" onclick="myTrackFunction()">Click Me to track!</button>
+        <button type="button" id="identify_profile_1" onclick="myIdentifyFirstProfileFunction()">Click Me to identify useExisting_3!</button>
+        <button type="button" id="identify_profile_2" onclick="myIdentifySecondProfileFunction()">Click Me to identify useExisting_2!</button>
+        <button type="button" id="track_opt_stat_change" onclick="myTrackOptStat()">Click Me to change opt status!</button>
+        <button type="button" id="alias_profile_2" onclick="myIdentifyThirdProfileFunction()">Click Me to alias!</button>
+        <button type="button" id="alias_event" onclick="myAliasFunction()">Click Me to create an alias!</button>
+    </a>
  <script>
         function myTrackFunction(){
             analytics.track('Something Happened',{
@@ -106,7 +98,7 @@ Hello World!
             });
         }
         function myTrackOptStat(){
-            const amplitudeDeviceId = amplitude.getInstance().getDeviceId();
+             const amplitudeDeviceId = getAmplitudeDeviceIdFromCookie();
             console.log("Amplitude device ID:", amplitudeDeviceId);
             analytics.track('Opt Status Changed',{
                 emailSubscriptionOptNumber:`Universal`,
