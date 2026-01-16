@@ -36,6 +36,67 @@ Hello World!
         <button type="button" id="alias_event" onclick="myAliasFunction()">Click Me to create an alias!</button>
     </a>
     <script>
+    (function patchSegmentEarly() {
+
+     function getAmplitudeDeviceId() {
+        try {
+      // Always fetch the latest device ID
+      return window.amplitude &&
+        typeof amplitude.getDeviceId === "function" &&
+        amplitude.getDeviceId();
+     } catch (e) {
+      return null;
+     }
+     }
+
+    function ensureOptions(args) {
+     const last = args[args.length - 1];
+     if (last && typeof last === "object" && !Array.isArray(last)) {
+      return last;
+     }
+    const options = {};
+    args.push(options);
+    return options;
+  }
+
+  function wrap(methodName) {
+    const original = analytics[methodName];
+
+    analytics[methodName] = function () {
+      const args = Array.prototype.slice.call(arguments);
+      const options = ensureOptions(args);
+
+      options.integrations = options.integrations || {};
+
+      const deviceId = getAmplitudeDeviceId();
+      if (deviceId) {
+        options.integrations.Amplitude = {
+          ...(options.integrations.Amplitude || {}),
+          device_id: deviceId
+        };
+      } else {
+        // Optional: log for debugging if device ID is missing
+        console.warn("Amplitude device_id not ready yet");
+      }
+
+      return original.apply(this, args);
+    };
+  }
+
+  function waitForAnalytics() {
+    if (window.analytics && analytics.track && analytics.identify) {
+      wrap("track");
+      wrap("identify");
+    } else {
+      setTimeout(waitForAnalytics, 10);
+    }
+  }
+
+  waitForAnalytics();
+
+})();
+</script>
+ <script>
         function myTrackFunction(){
             analytics.track('Something Happened',{
                 comments:`blabla`,
@@ -47,6 +108,7 @@ Hello World!
             });
         }
         function myTrackOptStat(){
+            console.log("Amplitude device ID:", amplitude.getDeviceId());
             analytics.track('Opt Status Changed',{
                 emailSubscriptionOptNumber:`Universal`,
                 emailSubscriptionOptIndicator: true
@@ -76,49 +138,5 @@ Hello World!
             analytics.alias(enc);
         }
     </script>
-    <script>
-  (function attachAmplitudeDeviceIdToSegment() {
-    function getAmplitudeDeviceId() {
-      return (
-        window.amplitude &&
-        typeof amplitude.getDeviceId === "function" &&
-        amplitude.getDeviceId()
-      );
-    }
-
-    function wrapSegmentMethod(methodName) {
-      const original = analytics[methodName];
-
-      analytics[methodName] = function () {
-        const args = Array.prototype.slice.call(arguments);
-        const optionsIndex = methodName === "identify" ? 2 : 2;
-
-        args[optionsIndex] = args[optionsIndex] || {};
-        args[optionsIndex].integrations = args[optionsIndex].integrations || {};
-
-        const deviceId = getAmplitudeDeviceId();
-        if (deviceId) {
-          args[optionsIndex].integrations.Amplitude = {
-            ...(args[optionsIndex].integrations.Amplitude || {}),
-            device_id: deviceId
-          };
-        }
-
-        return original.apply(this, args);
-      };
-    }
-
-    function waitForLibraries() {
-      if (window.analytics && window.amplitude && analytics.track && analytics.identify) {
-        wrapSegmentMethod("track");
-        wrapSegmentMethod("identify");
-      } else {
-        setTimeout(waitForLibraries, 100);
-      }
-    }
-
-    waitForLibraries();
-  })();
-</script>
 </body>
 </html>
